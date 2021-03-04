@@ -5,6 +5,7 @@ black<- 18
 red<- 18
 
 #Chances that the ball lands in a green pocket
+
 p_green<- p_green<- green/(green+black+red)
 p_green
 set.seed(1)
@@ -38,3 +39,41 @@ expected_S <- n*mu
 expected_S
 se_S<- sqrt(n)*se
 se_S
+#What is the probability that you end up winning money if you bet on green 100 times?
+n<- 100
+X<- sample(c(17,-1),n,replace=TRUE,prob=c(p_green,p_not_green))
+avg<-n*(17*p_green+(-1)*p_not_green)
+avg
+se<- sqrt(n)* abs(17-(-1))*sqrt(p_green*p_not_green)
+se
+1-pnorm(0,avg,se)
+#Create a Monte Carlo simulation that generates 10,000 outcomes of , the sum of 100 bets. 
+B<-100000
+set.seed(1)
+S <- replicate(B,{
+  X<-sample(c(17,-1),n,replace=TRUE,prob=c(p_green,p_not_green))
+  sum(X)
+})
+mean(S)
+sd(S)
+# Calculate the proportion of outcomes in the vector `S` that exceed $0
+mean(S>0)
+
+#Now create a random variable that contains your average winnings per bet after betting on green 10,000 times.
+B<- 10000
+n<1000
+X<- sample(c(17,-1),n,replace=TRUE,prob=c(p_green,p_not_green))
+mean(X)
+
+# Create a vector called `X` that contains the outcomes of `n` bets
+n<- 10000
+X<- sample(c(17,-1),n,replace=TRUE,prob=c(p_green,p_not_green))
+X[1:10]
+#a random variable that contains your average winnings per bet after betting on green 10,000 times.
+Y<- mean(X)
+Y 
+#What is the expected value of , the average outcome per bet after betting on green 10,000 times?
+(17*(p_green))+((-1)*(p_not_green))
+(abs(17-(-1))*sqrt(p_green*p_not_green))/sqrt(n)
+# Given this average and standard error, determine the probability of winning more than $0. Print the result to the console.
+1-pnorm(0,avg,se)
